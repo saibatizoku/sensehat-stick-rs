@@ -3,4 +3,9 @@ name = "sensehat-stick"
 version = "0.1.0"
 authors = ["Joaquin Rosales <globojorro@gmail.com>"]
 
+[features]
+default = ["linux-evdev"]
+linux-evdev = ["evdev"]
+
 [dependencies]
+evdev = { version = "0.10", optional = true }

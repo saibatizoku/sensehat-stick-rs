@@ -1,3 +1,6 @@
+#[cfg(feature = "linux-evdev")]
+extern crate evdev;
+
 #[cfg(test)]
 mod tests {
     #[test]
