@@ -2,8 +2,10 @@
 extern crate evdev;
 #[macro_use]
 extern crate failure;
+extern crate glob;
 
 use failure::Error;
+use glob::glob;
 
 
 #[cfg(test)]

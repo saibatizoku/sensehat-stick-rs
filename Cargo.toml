@@ -10,3 +10,4 @@ linux-evdev = ["evdev"]
 [dependencies]
 evdev = { version = "0.10", optional = true }
 failure = "0.1"
+glob = "0.2"
