@@ -10,6 +10,8 @@ use evdev::Device;
 use failure::Error;
 use glob::glob;
 
+use std::os::unix::io::RawFd;
+
 const SENSE_HAT_EVDEV_NAME: &[u8; 31] = b"Raspberry Pi Sense HAT Joystick";
 
 #[derive(Debug)]
@@ -101,6 +103,11 @@ impl JoyStick {
             })
             .collect();
         Ok(events)
+    }
+
+    /// Returns the raw file-descriptor, `RawFd`, for the the Joystick.
+    pub fn fd(&self) -> RawFd {
+        self.device.fd()
     }
 }
 
