@@ -1,6 +1,7 @@
 //! Support for asynchronous joystick I/O.
-use super::JoyStick;
+use super::{JoyStick, JoyStickEvent};
 
+use failure::Error;
 use mio::{Poll, PollOpt, Ready, Token};
 use mio::event::Evented;
 use mio::unix::EventedFd;
@@ -15,6 +16,9 @@ pub struct JoystickIo {
 impl JoystickIo {
     pub fn new(stick: JoyStick) -> Self {
         JoystickIo { stick }
+    }
+    pub fn events(&mut self) -> Result<Vec<JoyStickEvent>, Error> {
+        self.stick.events_no_sync()
     }
 }
 

@@ -1,3 +1,5 @@
+//! A Rust library for the Raspberry Pi Sense HAT Joystick.
+//! =======================================================
 #[cfg(feature = "linux-evdev")]
 extern crate evdev;
 #[macro_use]
@@ -37,7 +39,7 @@ impl Direction {
             c if c == Direction::Down as usize => Ok(Direction::Down),
             c if c == Direction::Left as usize => Ok(Direction::Left),
             c if c == Direction::Right as usize => Ok(Direction::Right),
-            _ => bail!("unrecognized joystick code"),
+            c => bail!("unrecognized joystick code: {}", c),
         }
     }
 }
@@ -55,7 +57,7 @@ impl Action {
             c if c == Action::Press as usize => Ok(Action::Press),
             c if c == Action::Release as usize => Ok(Action::Release),
             c if c == Action::Hold as usize => Ok(Action::Hold),
-            _ => bail!("unrecognized joystick action"),
+            c => bail!("unrecognized joystick action: {}", c),
         }
     }
 }
@@ -84,7 +86,7 @@ pub struct JoyStick {
 
 impl JoyStick {
     pub fn open() -> Result<Self, Error> {
-        for entry in glob("/sys/class/input/event*")? {
+        for entry in glob("/dev/input/event*")? {
             match entry {
                 Ok(path) => {
                     let device = Device::open(&path)?;
@@ -101,6 +103,7 @@ impl JoyStick {
     pub fn events_no_sync(&mut self) -> Result<Vec<JoyStickEvent>, Error> {
         let events: Vec<JoyStickEvent> = self.device
             .events_no_sync()?
+            .filter(|ev| ev._type == 1)
             .map(|ev| {
                 let time = ev.time.tv_sec as usize;
                 let direction = Direction::try_from(ev.code as usize).unwrap();
