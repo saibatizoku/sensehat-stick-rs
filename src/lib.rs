@@ -6,11 +6,17 @@ extern crate glob;
 #[cfg(feature = "async")]
 extern crate mio;
 
+#[cfg(feature = "async")]
+mod async;
+
 use evdev::Device;
 use failure::Error;
 use glob::glob;
 
 use std::os::unix::io::RawFd;
+
+#[cfg(feature = "async")]
+pub use async::JoystickIo;
 
 const SENSE_HAT_EVDEV_NAME: &[u8; 31] = b"Raspberry Pi Sense HAT Joystick";
 
