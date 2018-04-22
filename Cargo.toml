@@ -4,10 +4,12 @@ version = "0.1.0"
 authors = ["Joaquin Rosales <globojorro@gmail.com>"]
 
 [features]
-default = ["linux-evdev"]
+default = ["linux-evdev", "async"]
 linux-evdev = ["evdev"]
+async = ["mio"]
 
 [dependencies]
 evdev = { version = "0.10", optional = true }
 failure = "0.1"
 glob = "0.2"
+mio = { version = "0.6", optional = true }

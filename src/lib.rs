@@ -3,6 +3,8 @@ extern crate evdev;
 #[macro_use]
 extern crate failure;
 extern crate glob;
+#[cfg(feature = "async")]
+extern crate mio;
 
 use evdev::Device;
 use failure::Error;
