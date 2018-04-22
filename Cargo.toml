@@ -1,7 +1,12 @@
 [package]
 name = "sensehat-stick"
+description = "A Rust library for the Raspberry Pi Sense HAT Joystick."
 version = "0.1.0"
 authors = ["Joaquin Rosales <globojorro@gmail.com>"]
+homepage = "https://github.com/saibatizoku/sensehat-stick-rs"
+repository = "https://github.com/saibatizoku/sensehat-stick-rs"
+readme = "README.md"
+license = "MIT"
 
 [features]
 default = ["linux-evdev", "async"]
