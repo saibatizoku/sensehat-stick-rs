@@ -1,3 +1,5 @@
+//! This example shows how to use `mio::Poll` with the
+//! `sensehat_stick::JoyStick`, in a non-blocking fashion.
 extern crate mio;
 extern crate sensehat_stick;
 
@@ -16,8 +18,10 @@ fn main() {
         .unwrap();
 
     loop {
+        // Internal handling of `epoll` event registration and retrieval.
         poll.poll(&mut events, None).unwrap();
 
+        // This only lists the events that were retrieved by the last poll.
         for event in &events {
             if event.token() == JOYSTICK && event.readiness().is_readable() {
                 match stick.events() {
@@ -25,6 +29,7 @@ fn main() {
                         println!("{:?}", ev);
                     },
                     Err(e) => {
+                        // Handling of spurious wake-ups, as usual.
                         if e.kind() == io::ErrorKind::WouldBlock {
                             continue;
                         }
