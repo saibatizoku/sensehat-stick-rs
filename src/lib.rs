@@ -17,8 +17,6 @@ use glob::glob;
 
 use std::os::unix::io::RawFd;
 
-#[cfg(feature = "async")]
-pub use async::JoystickIo;
 
 const SENSE_HAT_EVDEV_NAME: &[u8; 31] = b"Raspberry Pi Sense HAT Joystick";
 
