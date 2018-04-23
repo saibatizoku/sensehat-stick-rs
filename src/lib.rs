@@ -9,11 +9,11 @@ extern crate evdev;
 #[macro_use]
 extern crate failure;
 extern crate glob;
-#[cfg(feature = "async")]
+#[cfg(feature = "poll")]
 extern crate mio;
 
-#[cfg(feature = "async")]
-mod async;
+#[cfg(feature = "poll")]
+mod poll;
 
 use evdev::Device;
 use failure::Error;

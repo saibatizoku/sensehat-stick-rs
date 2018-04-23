@@ -1,4 +1,4 @@
-//! Support for asynchronous joystick I/O.
+//! Support for efficient polling for the joystick file-descriptor.
 use super::JoyStick;
 
 use mio::{Poll, PollOpt, Ready, Token};

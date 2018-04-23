@@ -11,9 +11,9 @@ readme = "README.md"
 license = "MIT"
 
 [features]
-default = ["linux-evdev", "async"]
+default = ["linux-evdev", "poll"]
 linux-evdev = ["evdev"]
-async = ["mio"]
+poll = ["mio"]
 
 [dependencies]
 evdev = { version = "0.10", optional = true }
