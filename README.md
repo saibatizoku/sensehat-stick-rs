@@ -1,6 +1,10 @@
 A Rust library for the Raspberry Pi Sense HAT Joystick.
 =======================================================
 
+[![crates.io](https://img.shields.io/crates/v/sensehat-stick.svg)](https://crates.io/crates/sensehat-stick)
+[![docs](https://docs.rs/sensehat-stick/badge.svg)](https://docs.rs/sensehat-stick)
+
+
 The joystick integrated on the [Raspberry Pi Sense HAT](https://www.raspberrypi.org/products/sense-hat/), is well integrated to Linux systems. The Sense HAT hardware provides a driver for `evdev`, or `event device` interface in the Linux kernel.
 
 As such, the `evdev` file-descriptor for the joystick, can be read for events issued by someone pushing the joystick.
