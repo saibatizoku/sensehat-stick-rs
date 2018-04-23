@@ -17,6 +17,7 @@ use glob::glob;
 
 use std::io;
 use std::os::unix::io::RawFd;
+use std::time::Duration;
 
 
 const SENSE_HAT_EVDEV_NAME: &[u8; 31] = b"Raspberry Pi Sense HAT Joystick";
@@ -63,13 +64,13 @@ impl Action {
 
 #[derive(Debug)]
 pub struct JoyStickEvent {
-    timestamp: usize,
+    timestamp: Duration,
     direction: Direction,
     action: Action,
 }
 
 impl JoyStickEvent {
-    fn new(timestamp: usize, direction: Direction, action: Action) -> Self {
+    fn new(timestamp: Duration, direction: Direction, action: Action) -> Self {
         JoyStickEvent {
             timestamp,
             direction,
@@ -99,13 +100,18 @@ impl JoyStick {
         bail!("No Joystick found")
     }
 
+    /// Returns a result with a `Vec<JoyStickEvent>`. This function will
+    /// block the current thread until events are issued by the `JoyStick` device.
     pub fn events(&mut self) -> io::Result<Vec<JoyStickEvent>> {
         let events: Vec<JoyStickEvent> = self.device
             .events_no_sync()
             .map_err(|e| io::Error::from(e))?
             .filter(|ev| ev._type == 1)
             .map(|ev| {
-                let time = ev.time.tv_sec as usize;
+                let secs = ev.time.tv_sec as u64;
+                let nsecs = ev.time.tv_usec as u32 * 1_000;
+                let time = Duration::new(secs, nsecs);
+
                 let direction = Direction::try_from(ev.code as usize).unwrap();
                 let action = Action::try_from(ev.value as usize).unwrap();
                 JoyStickEvent::new(time, direction, action)
