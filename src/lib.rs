@@ -26,13 +26,15 @@ use std::time::Duration;
 // Device name provided by the hardware. We match against it.
 const SENSE_HAT_EVDEV_NAME: &[u8; 31] = b"Raspberry Pi Sense HAT Joystick";
 
-/// Direction in which the JoyStick is moved. Internally, it matches the key-press events:
+/// Direction in which the JoyStick is moved.
 ///
-/// * `Direction::Enter` = 28
-/// * `Direction::Up` = 103
-/// * `Direction::Down` = 108
-/// * `Direction::Left` = 105
-/// * `Direction::Up` = 106
+/// Internally, it matches the key-press events:
+///
+/// * `Direction::Enter = 28`
+/// * `Direction::Up = 103`
+/// * `Direction::Down = 108`
+/// * `Direction::Left = 105`
+/// * `Direction::Up = 106`
 #[derive(Debug)]
 pub enum Direction {
     Enter = 28,
@@ -139,13 +141,5 @@ impl JoyStick {
     /// Returns the raw file-descriptor, `RawFd`, for the the Joystick.
     pub fn fd(&self) -> RawFd {
         self.device.fd()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
     }
 }
