@@ -23,7 +23,6 @@ use std::io;
 use std::os::unix::io::RawFd;
 use std::time::Duration;
 
-
 // Device name provided by the hardware. We match against it.
 const SENSE_HAT_EVDEV_NAME: &[u8; 31] = b"Raspberry Pi Sense HAT Joystick";
 

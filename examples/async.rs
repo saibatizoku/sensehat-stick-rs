@@ -21,11 +21,9 @@ fn main() {
         for event in &events {
             if event.token() == JOYSTICK && event.readiness().is_readable() {
                 match stick.events() {
-                    Ok(evts) => {
-                        for ev in &evts {
-                            println!("{:?}", ev);
-                        }
-                    }
+                    Ok(evts) => for ev in &evts {
+                        println!("{:?}", ev);
+                    },
                     Err(e) => {
                         if e.kind() == io::ErrorKind::WouldBlock {
                             continue;
