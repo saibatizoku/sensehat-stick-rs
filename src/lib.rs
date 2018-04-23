@@ -15,6 +15,7 @@ use evdev::Device;
 use failure::Error;
 use glob::glob;
 
+use std::io;
 use std::os::unix::io::RawFd;
 
 
@@ -98,9 +99,10 @@ impl JoyStick {
         bail!("No Joystick found")
     }
 
-    pub fn events_no_sync(&mut self) -> Result<Vec<JoyStickEvent>, Error> {
+    pub fn events(&mut self) -> io::Result<Vec<JoyStickEvent>> {
         let events: Vec<JoyStickEvent> = self.device
-            .events_no_sync()?
+            .events_no_sync()
+            .map_err(|e| io::Error::from(e))?
             .filter(|ev| ev._type == 1)
             .map(|ev| {
                 let time = ev.time.tv_sec as usize;

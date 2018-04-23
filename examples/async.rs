@@ -19,9 +19,19 @@ fn main() {
         poll.poll(&mut events, None).unwrap();
 
         for event in &events {
-            if event.token() == Token(0) && event.readiness().is_readable() {
-                for ev in &stick.events().unwrap() {
-                    println!("{:?}", ev);
+            if event.token() == JOYSTICK && event.readiness().is_readable() {
+                match stick.events() {
+                    Ok(evts) => {
+                        for ev in &evts {
+                            println!("{:?}", ev);
+                        }
+                    }
+                    Err(e) => {
+                        if e.kind() == io::ErrorKind::WouldBlock {
+                            continue;
+                        }
+                        bail!(e);
+                    }
                 }
             }
         }
