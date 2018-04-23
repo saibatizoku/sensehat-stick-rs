@@ -1,5 +1,9 @@
 //! A Rust library for the Raspberry Pi Sense HAT Joystick.
 //! =======================================================
+//!
+//! This library supports the joystick incorporated with the Sense HAT.
+//!
+//! The Joystick provides a driver for `evdev`.
 #[cfg(feature = "linux-evdev")]
 extern crate evdev;
 #[macro_use]
@@ -20,8 +24,16 @@ use std::os::unix::io::RawFd;
 use std::time::Duration;
 
 
+// Device name provided by the hardware. We match against it.
 const SENSE_HAT_EVDEV_NAME: &[u8; 31] = b"Raspberry Pi Sense HAT Joystick";
 
+/// Direction in which the JoyStick is moved. Internally, it matches the key-press events:
+///
+/// * `Direction::Enter` = 28
+/// * `Direction::Up` = 103
+/// * `Direction::Down` = 108
+/// * `Direction::Left` = 105
+/// * `Direction::Up` = 106
 #[derive(Debug)]
 pub enum Direction {
     Enter = 28,
@@ -44,6 +56,7 @@ impl Direction {
     }
 }
 
+/// The action that was executed with the given `Direction`.
 #[derive(Debug)]
 pub enum Action {
     Release = 0,
@@ -62,6 +75,8 @@ impl Action {
     }
 }
 
+/// An event issued by the `JoyStick`. Provides a UNIX-timestamp in the form of
+/// `std::time::Duration`, the `Direction`, and the `Action` that were issued by the `JoyStick`.
 #[derive(Debug)]
 pub struct JoyStickEvent {
     timestamp: Duration,
@@ -79,12 +94,14 @@ impl JoyStickEvent {
     }
 }
 
+/// A type representing the Sense HAT joystick device.
 #[derive(Debug)]
 pub struct JoyStick {
     device: Device,
 }
 
 impl JoyStick {
+    /// Open the joystick device by name in the `/dev/input/event*` path on the filesystem.
     pub fn open() -> Result<Self, Error> {
         for entry in glob("/dev/input/event*")? {
             match entry {
